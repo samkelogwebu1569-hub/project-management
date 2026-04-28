@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "dev": "cd client/project-management-main && npm run dev",
+    "build": "cd client/project-management-main && npm run build"
+  },
+  "dependencies": {
+    "@clerk/react": "^6.4.5"
+  },
+  "name": "project-management",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
