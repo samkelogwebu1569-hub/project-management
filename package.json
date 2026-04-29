@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "dev": "cd client/project-management-main && npm run dev",
-    "build": "cd client/project-management-main && npm run build"
+    "dev": "vite",
+    "build": "vite build"
   },
   "dependencies": {
     "@clerk/react": "^6.4.5"
