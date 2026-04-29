@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-     "dev": "cd client/project-management-main && npm run dev",
-     "build": "cd client/project-management-main && npm install && npm run build",
+     "dev": "vite",
+ "build": "npm install && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
