@@ -1,5 +1,8 @@
-{
-  "buildCommand": "cd client/project-management-main && npm install && npm run build",
-  "outputDirectory": "client/project-management-main/dist",
-  "framework": "vite"
-}
+  {
+    "rewrites": [
+      {
+        "source": "/(.*)",
+        "destination": "/"
+      }
+    ]
+  }
