@@ -2,9 +2,7 @@
   "scripts": {
     "start": "npx prisma generate --schema=./prisma/schema.prisma && node server.js",
     "dev": "vite",
-    "build": "vite build",
-    "postinstall": "npx prisma generate --schema=./prisma/schema.prisma",
-    "vercel-build": "npx prisma generate --schema=./prisma/schema.prisma && prisma migrate deploy && next build"
+    "build": "vite build"
   },
   "dependencies": {
     "@clerk/react": "^6.4.5",

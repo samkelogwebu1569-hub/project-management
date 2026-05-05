@@ -1,0 +1,6 @@
+{
+  "buildCommand": "cd server && npm run vercel-build",
+  "installCommand": "cd server && npm install",
+  "outputDirectory": "server",
+  "framework": null
+}
