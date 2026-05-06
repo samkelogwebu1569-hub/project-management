@@ -33,34 +33,118 @@
 
 ## 🛠️ Tech Stack <a name="-tech-stack"></a>
 
-- **Framework:** ReactJS
-- **Styling:** Tailwind CSS
+### Frontend
+- **Framework:** ReactJS + Vite
+- **Styling:** Tailwind CSS v4
 - **UI Components:** Lucide React for icons
 - **State Management:** Redux Toolkit
+- **Authentication:** Clerk
+
+### Backend
+- **Framework:** Express.js
+- **Database:** PostgreSQL (Neon)
+- **ORM:** Prisma v7
+- **Authentication:** Clerk Express
+- **Serverless Functions:** Inngest (webhooks)
 
 ## 🚀 Getting Started <a name="-getting-started"></a>
 
-First, install the dependencies. We recommend using `npm` for this project.
+### Prerequisites
+- Node.js 18+
+- PostgreSQL database (Neon recommended)
+- Clerk account
+
+### 1. Clone and Install
 
 ```bash
+# Install client dependencies
+cd client
+npm install --legacy-peer-deps
+
+# Install server dependencies
+cd ../server
 npm install
 ```
 
-Then, run the development server:
+### 2. Environment Variables
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Create `.env` files:
+
+**Client (`client/.env`):**
+```env
+VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 ```
 
-Open [http://localhost:5173](http://localhost:5173) with your browser to see the result.
+**Server (`server/.env`):**
+```env
+NODE_ENV=development
+CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+CLERK_WEBHOOK_SECRET=your_webhook_secret
 
-You can start editing the page by modifying `src/App.jsx`. The page auto-updates as you edit the file.
+# Neon PostgreSQL
+DATABASE_URL="postgresql://..."  # Pooled connection
+DIRECT_URL="postgresql://..."    # Direct connection for Prisma CLI
+
+# Inngest
+INNGEST_EVENT_KEY=your_inngest_key
+INNGEST_SIGNING_KEY=your_signing_key
+```
+
+### 3. Database Setup
+
+```bash
+cd server
+npx prisma db push
+npx prisma generate
+```
+
+### 4. Run Development Servers
+
+**Terminal 1 - Backend:**
+```bash
+cd server
+npm run server
+```
+
+**Terminal 2 - Frontend:**
+```bash
+cd client
+npm run dev
+```
+
+- Frontend: http://localhost:5173
+- Backend: http://localhost:5000
+- Inngest Dev Server: http://localhost:5000/api/inngest
+
+---
+
+## 🌐 Deployment <a name="-deployment"></a>
+
+### Vercel (Recommended)
+
+**Frontend:**
+1. Connect your GitHub repo to Vercel
+2. Set framework preset to **Vite**
+3. Add environment variable: `VITE_CLERK_PUBLISHABLE_KEY`
+4. Deploy
+
+**Backend:**
+1. Create separate Vercel project for `server/` folder
+2. Set all server environment variables
+3. Add webhook URL in Clerk dashboard: `https://your-api.vercel.app/api/inngest`
+
+### Environment Variables for Production
+
+| Variable | Frontend | Backend | Description |
+|----------|----------|---------|-------------|
+| `VITE_CLERK_PUBLISHABLE_KEY` | ✅ | ❌ | Clerk public key |
+| `CLERK_SECRET_KEY` | ❌ | ✅ | Clerk secret key |
+| `CLERK_WEBHOOK_SECRET` | ❌ | ✅ | Webhook verification |
+| `DATABASE_URL` | ❌ | ✅ | Neon pooled URL |
+| `DIRECT_URL` | ❌ | ✅ | Neon direct URL |
+| `INNGEST_EVENT_KEY` | ❌ | ✅ | Inngest events |
+| `INNGEST_SIGNING_KEY` | ❌ | ✅ | Inngest signing |
 
 ---
 
