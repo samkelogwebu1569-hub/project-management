@@ -10,16 +10,13 @@ import { ClerkProvider } from '@clerk/react'
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
 if (!PUBLISHABLE_KEY){
-
-    throw new Error('Missing Publishable Key')
+    console.warn('Missing Publishable Key - running without authentication')
 }
 
 createRoot(document.getElementById('root')).render(
     <BrowserRouter>
-    <ClerkProvider publishablekey={PUBLISHABLE_KEY}>
           <Provider store={store}>
                 <App />
             </Provider>
-          </ClerkProvider>
     </BrowserRouter>,
 )
