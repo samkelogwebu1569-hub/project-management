@@ -5,17 +5,24 @@ import { Outlet } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { loadTheme } from '../features/themeSlice'
 import { Loader2Icon } from 'lucide-react'
+import {useUser, SignIn} from '@clerk/react'
 
 const Layout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const { loading } = useSelector((state) => state.workspace)
     const dispatch = useDispatch()
+    const { user } = useUser()
 
     // Initial load of theme
     useEffect(() => {
         dispatch(loadTheme())
 
     }, [dispatch])
+
+if(!user){
+    // Temporarily bypass auth to see app content
+    console.warn('No user - bypassing auth for debugging')
+}
 
     if (loading) return (
         <div className='flex items-center justify-center h-screen bg-white dark:bg-zinc-950'>
