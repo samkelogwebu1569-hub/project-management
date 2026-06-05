@@ -5,30 +5,51 @@ import { Outlet } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { loadTheme } from '../features/themeSlice'
 import { Loader2Icon } from 'lucide-react'
-import {useUser, SignIn} from '@clerk/react'
+import { useUser, useAuth, CreateOrganization } from '@clerk/clerk-react'
+import { fetchWorkspaces } from '../features/workspaceSlice'
 
 const Layout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-    const { loading } = useSelector((state) => state.workspace)
+    const { loading, workspaces } = useSelector((state) => state.workspace)
     const dispatch = useDispatch()
-    const { user } = useUser()
+    const { user, isLoaded } = useUser()  // Fixed: destructure isLoaded
+    const { getToken } = useAuth()
 
     // Initial load of theme
     useEffect(() => {
         dispatch(loadTheme())
-
     }, [dispatch])
 
-if(!user){
-    // Temporarily bypass auth to see app content
-    console.warn('No user - bypassing auth for debugging')
-}
+    // Initial load of workspaces
+    useEffect(() => {
+        if (isLoaded && user && workspaces.length === 0) {  // Fixed: lowercase 'length'
+            dispatch(fetchWorkspaces({ getToken }))  // Fixed: pass as object
+        }
+    }, [user, isLoaded, dispatch, getToken, workspaces.length])
 
-    if (loading) return (
-        <div className='flex items-center justify-center h-screen bg-white dark:bg-zinc-950'>
-            <Loader2Icon className="size-7 text-blue-500 animate-spin" />
-        </div>
-    )
+    if (!isLoaded || loading) {
+        return (
+            <div className='flex items-center justify-center h-screen bg-white dark:bg-zinc-950'>
+                <Loader2Icon className="size-7 text-blue-500 animate-spin" />
+            </div>
+        )
+    }
+
+    if (!user) {
+        return (
+            <div className='flex items-center justify-center h-screen bg-white dark:bg-zinc-950'>
+                <p className="text-gray-900 dark:text-slate-100">Please sign in to continue</p>
+            </div>
+        )
+    }
+
+    if (user && workspaces.length === 0) {
+        return (
+            <div className='min-h-screen flex flex-col items-center justify-center bg-white dark:bg-zinc-950'>
+                <CreateOrganization />
+            </div>
+        )
+    }
 
     return (
         <div className="flex bg-white dark:bg-zinc-950 text-gray-900 dark:text-slate-100">
@@ -43,4 +64,4 @@ if(!user){
     )
 }
 
-export default Layout
+export default Layout;
